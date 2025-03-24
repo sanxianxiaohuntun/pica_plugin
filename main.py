@@ -2,47 +2,34 @@ import os
 import asyncio
 import yaml
 from typing import List
-
 from pkg.plugin.context import register, handler, BasePlugin, APIHost, EventContext
 from pkg.plugin.events import PersonNormalMessageReceived, GroupNormalMessageReceived
 from pkg.platform.types.message import MessageChain, Plain, Image
-
 from plugins.pica_plugin.get_image import get_pica_images, search_comics, get_comic_episodes
 from plugins.pica_plugin.forward_message import ForwardMessageBuilder, build_message_chain, build_forward_message
 
-# 读取配置文件
 config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "yaml", "config.yaml")
 with open(config_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
 
-# 获取配置信息
 MAX_SEARCH_RESULTS = config.get("max_search_results", 10)
 
 
-# 注册插件
-@register(name="看漫画",description="漫画搜索和下载插件",version="1.0.0",author="小馄饨")
+@register(name="看漫画",description="漫画搜索和下载查看插件",version="0.1",author="小馄饨")
 
 class PicaPlugin(BasePlugin):
-    """漫画插件"""
-    
-    # 下载任务列表
     download_tasks: List[asyncio.Task] = []
     
     def __init__(self, host: APIHost):
-        """初始化插件"""
         super().__init__(host)
-        # 初始化合并转发消息构建器
         self.forward_message = ForwardMessageBuilder(host="127.0.0.1", port=3000)
     
-    # 异步初始化
     async def initialize(self):
-        """异步初始化插件"""
         cache_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "cache")
         os.makedirs(cache_dir, exist_ok=True)
     
     @handler(PersonNormalMessageReceived)
     async def person_message_received(self, ctx: EventContext):
-        """处理私聊消息"""
         msg = ctx.event.text_message.strip()
         
         if msg.startswith("搜漫画"):
@@ -59,7 +46,6 @@ class PicaPlugin(BasePlugin):
     
     @handler(GroupNormalMessageReceived)
     async def group_message_received(self, ctx: EventContext):
-        """处理群聊消息"""
         msg = ctx.event.text_message.strip()
         
         if msg.startswith("搜漫画"):
@@ -75,7 +61,6 @@ class PicaPlugin(BasePlugin):
             await self._show_help(ctx)
     
     async def _search_comics(self, ctx: EventContext, msg: str):
-        """搜索漫画"""
         parts = msg.split()
         if len(parts) < 2:
             await ctx.reply(MessageChain([Plain("请提供搜索关键词，例如：搜漫画 关键词 [页码]")]))
