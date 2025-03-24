@@ -20,7 +20,7 @@ MAX_SEARCH_RESULTS = config.get("max_search_results", 10)
 
 
 # 注册插件
-@register(name="PicaPlugin",description="漫画搜索和下载插件",version="1.0.0",author="AI助手")
+@register(name="看漫画",description="漫画搜索和下载插件",version="1.0.0",author="小馄饨")
 
 class PicaPlugin(BasePlugin):
     """漫画插件"""
