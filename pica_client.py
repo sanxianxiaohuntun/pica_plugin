@@ -54,23 +54,21 @@ class PicaClient:
         
         try:
             async with aiohttp.ClientSession() as session:
+                kwargs = {
+                    "headers": header,
+                    "ssl": False,
+                    "timeout": 30
+                }
+                
+                # 只有当代理配置存在时才添加代理
+                if self.proxy:
+                    kwargs["proxy"] = self.proxy
+                
                 if method == "GET":
-                    rs = await session.get(
-                        url=url, 
-                        proxy=self.proxy, 
-                        headers=header, 
-                        ssl=False,
-                        timeout=30
-                    )
+                    rs = await session.get(url=url, **kwargs)
                 elif method == "POST":
-                    rs = await session.post(
-                        url=url, 
-                        proxy=self.proxy, 
-                        headers=header, 
-                        data=json_data, 
-                        ssl=False,
-                        timeout=30
-                    )
+                    kwargs["data"] = json_data
+                    rs = await session.post(url=url, **kwargs)
                 
                 response = await rs.json()
                 return response
@@ -123,14 +121,24 @@ class PicaClient:
         return response
 
     async def download_image(self, url: str, save_path: str) -> bool:
-        if not self.proxy:
-            return False
+        # 移除强制要求代理的检查
+        # if not self.proxy:
+        #     return False
             
         try:
             os.makedirs(os.path.dirname(save_path), exist_ok=True)
             
             async with aiohttp.ClientSession() as session:
-                async with session.get(url, proxy=self.proxy, ssl=False, timeout=60) as response:
+                kwargs = {
+                    "ssl": False,
+                    "timeout": 60
+                }
+                
+                # 只有当代理配置存在时才添加代理
+                if self.proxy:
+                    kwargs["proxy"] = self.proxy
+                    
+                async with session.get(url, **kwargs) as response:
                     if response.status == 200:
                         data = await response.read()
                         with open(save_path, "wb") as f:
