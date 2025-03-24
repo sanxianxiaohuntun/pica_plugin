@@ -1,6 +1,6 @@
 # 漫画账号配置
-account: "哔咔漫画账号"  # 账号
-password: "哔咔漫画密码"  # 密码
+account: "huntunceshi"  # 账号
+password: "huntunceshi"  # 密码
 proxy: ""  # 代理服务器地址，可选配置，如 "http://127.0.0.1:7890"，不需要代理可留空或删除此行
 
 # 合并转发消息配置
