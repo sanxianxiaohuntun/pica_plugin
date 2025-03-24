@@ -1,0 +1,5 @@
+aiohttp>=3.8.0
+ujson>=5.4.0
+pyyaml>=6.0
+aiofiles>=0.8.0
+pillow>=9.0.0 

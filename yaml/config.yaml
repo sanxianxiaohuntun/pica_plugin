@@ -1,0 +1,14 @@
+# 漫画账号配置
+account: "哔咔漫画账号"  # 账号
+password: "哔咔漫画密码"  # 密码
+proxy: "http://127.0.0.1:7890"  # 代理服务器地址，如 "http://127.0.0.1:7890"
+
+# 合并转发消息配置
+forward:
+  sender_name: "漫画"
+  sender_id: "3870128501"
+
+# 其他设置
+max_preview_pages: 100  # 图片数量上限
+max_search_results: 10  # 搜索结果显示数量上限
+max_image_height: 20000  # 单批图片合并的最大高度限制（像素） 
