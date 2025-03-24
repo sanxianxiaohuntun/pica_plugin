@@ -57,9 +57,6 @@ async def download_comic_images(comic_id: str, ep: int, safe_title: str) -> Tupl
     if not await login():
         raise Exception("哔咔账号未登录，请检查配置")
     
-    if not PROXY:
-        raise Exception("请在plugins\\pica_plugin\\yaml\\config.yaml配置代理服务器地址")
-    
     comic_dir = os.path.join(CACHE_DIR, safe_title)
     os.makedirs(comic_dir, exist_ok=True)
     
@@ -87,7 +84,7 @@ async def download_comic_images(comic_id: str, ep: int, safe_title: str) -> Tupl
             downloaded_images.append(image_path)
     
     if not downloaded_images:
-        raise Exception("未能下载任何图片，请在plugins\\pica_plugin\\yaml\\config.yaml配置代理服务器地址")
+        raise Exception("未能下载任何图片，请检查网络连接或考虑配置代理服务器")
     
     return downloaded_images, total_pages
 
@@ -113,6 +110,6 @@ async def get_pica_images(comic_id: str, ep: int = 1) -> Tuple[Dict[str, Any], L
     downloaded_images, total_pages = await download_comic_images(comic_id, ep, safe_title)
     
     if not downloaded_images:
-        raise Exception("未能下载任何图片，请在plugins\\pica_plugin\\yaml\\config.yaml配置代理服务器地址")
+        raise Exception("未能下载任何图片，请检查网络连接或考虑配置代理服务器")
     
     return comic_info, downloaded_images, safe_title
