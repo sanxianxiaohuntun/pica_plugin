@@ -6,7 +6,7 @@ proxy: "http://127.0.0.1:7890"  # 代理服务器地址，如 "http://127.0.0.1:
 # 合并转发消息配置
 forward:
   sender_name: "漫画"
-  sender_id: "3870128501"
+  sender_id: "555667899"
 
 # 其他设置
 max_preview_pages: 100  # 图片数量上限
